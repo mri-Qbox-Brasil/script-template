@@ -1,0 +1,11 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    uses: mri-Qbox-Brasil/template-fivem/.github/workflows/callable-release.yml@main
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}

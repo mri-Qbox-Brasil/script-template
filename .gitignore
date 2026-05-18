@@ -1,0 +1,7 @@
+node_modules/
+.release/node_modules/
+dist/
+web/build/
+web/node_modules/
+config/user.lua
+.env

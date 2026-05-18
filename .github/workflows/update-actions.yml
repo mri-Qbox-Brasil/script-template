@@ -1,0 +1,14 @@
+name: Update Actions Versions
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    uses: mri-Qbox-Brasil/template-fivem/.github/workflows/callable-update-actions.yml@main
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    with:
+      pr-team: ${{ vars.PR_TEAM }}
