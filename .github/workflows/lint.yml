@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   lint:
-    uses: mri-Qbox-Brasil/template-fivem/.github/workflows/callable-lint.yml@main
+    uses: mri-Qbox-Brasil/workflows/.github/workflows/callable-lint.yml@main
     with:
       web-lint: false
       lua-lint: false
