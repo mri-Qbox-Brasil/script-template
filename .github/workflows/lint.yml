@@ -1,0 +1,20 @@
+name: Lint
+
+on:
+  pull_request:
+    paths:
+      - "web/**"
+      - "fxmanifest.lua"
+      - ".github/workflows/lint.yml"
+  workflow_dispatch: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    uses: mri-Qbox-Brasil/template-fivem/.github/workflows/callable-lint.yml@main
+    with:
+      web-lint: true
+      lua-lint: false
