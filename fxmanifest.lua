@@ -4,22 +4,27 @@ game "gta5"
 lua54 "yes"
 
 author "MRI Qbox Team"
-description "Novo recurso baseado no MRI Template"
+description "Plugin para o mri_Qadmin"
 version "__VERSION__"
 
--- Scripts de Cliente
+ox_lib "locale"
+
+shared_scripts {
+    "@ox_lib/init.lua",
+}
+
 client_scripts {
-    "client/*.lua"
+    "client/*.lua",
 }
 
--- Scripts de Servidor
 server_scripts {
-    "server/*.lua"
+    "server/*.lua",
 }
 
--- Interface (NUI)
-ui_page "web/build/index.html"
+ui_page "html/index.html"
 
 files {
-    "web/build/**",
+    "html/**/*",
+    "locales/*.json",
+    "data/*.json",
 }

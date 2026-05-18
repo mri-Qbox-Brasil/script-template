@@ -1,25 +1,72 @@
-import React from 'react';
-import { NuiProvider } from './context/NuiContext';
+import React, { useState } from 'react'
+import { usePluginBridgeGuest } from './plugin/usePluginBridgeGuest'
+import { useIsEmbedded } from './plugin/useIsEmbedded'
+import { useNuiEvent } from './context/NuiContext'
+import { useAccentColor } from './hooks/useAccentColor'
+import { HelloPlugin } from './components/HelloPlugin'
+import { ConfigPanel } from './components/ConfigPanel'
+import { MriSpinner } from '@mriqbox/ui-kit'
+
+type Tab = 'home' | 'config'
+
+function PluginContent({ locale, accentColor }: { locale?: string; accentColor: string }) {
+    const [tab, setTab] = useState<Tab>('home')
+    useAccentColor(accentColor)
+
+    return (
+        <div className="flex flex-col h-full w-full bg-background text-foreground">
+            <div className="border-b border-border flex gap-4 px-6 pt-4">
+                <button
+                    className={`pb-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
+                        tab === 'home'
+                            ? 'border-primary text-primary'
+                            : 'border-transparent text-muted-foreground hover:text-foreground'
+                    }`}
+                    onClick={() => setTab('home')}
+                >
+                    Home
+                </button>
+                <button
+                    className={`pb-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
+                        tab === 'config'
+                            ? 'border-primary text-primary'
+                            : 'border-transparent text-muted-foreground hover:text-foreground'
+                    }`}
+                    onClick={() => setTab('config')}
+                >
+                    Config
+                </button>
+            </div>
+            <div className="flex-1 overflow-auto">
+                {tab === 'home' && <HelloPlugin locale={locale} />}
+                {tab === 'config' && <ConfigPanel locale={locale} />}
+            </div>
+        </div>
+    )
+}
+
+function EmbeddedMode() {
+    const { locale, accentColor, initialized } = usePluginBridgeGuest()
+    if (!initialized) {
+        return (
+            <div className="flex items-center justify-center h-full">
+                <MriSpinner />
+            </div>
+        )
+    }
+    return <PluginContent locale={locale} accentColor={accentColor} />
+}
+
+function StandaloneMode() {
+    const [visible, setVisible] = useState(false)
+    useNuiEvent<boolean>('setVisible', setVisible)
+    if (!visible) return null
+    return <PluginContent accentColor="#00E699" />
+}
 
 const App: React.FC = () => {
-  return (
-    <NuiProvider>
-      <div className="flex items-center justify-center w-full h-full text-white bg-slate-900/80">
-        <div className="p-8 text-center bg-slate-800 rounded-lg shadow-xl shadow-black/50 border border-slate-700">
-          <h1 className="text-4xl font-bold mb-4">FiveM React Template</h1>
-          <p className="text-lg text-slate-400">
-            Pronto para começar a criar interfaces incríveis!
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-4">
-            <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm border border-blue-500/30">React</span>
-            <span className="px-3 py-1 bg-sky-500/20 text-sky-400 rounded-full text-sm border border-sky-500/30">Tailwind</span>
-            <span className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-sm border border-yellow-500/30">Vite</span>
-            <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm border border-green-500/30">TypeScript</span>
-          </div>
-        </div>
-      </div>
-    </NuiProvider>
-  );
-};
+    const embedded = useIsEmbedded()
+    return embedded ? <EmbeddedMode /> : <StandaloneMode />
+}
 
-export default App;
+export default App

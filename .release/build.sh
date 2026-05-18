@@ -12,8 +12,16 @@ mkdir -p "dist/$SCRIPT_NAME"
 if [ -d "web" ]; then
   echo "Building web..."
   cd web
-  npm install --prefer-offline --no-audit --no-fund
-  npm run build
+  if [ -f "pnpm-lock.yaml" ]; then
+    if ! command -v pnpm &> /dev/null; then
+      npm install -g pnpm@9
+    fi
+    pnpm install --prefer-offline --no-audit --no-fund
+    pnpm run build
+  else
+    npm install --prefer-offline --no-audit --no-fund
+    npm run build
+  fi
   cd ..
 fi
 
