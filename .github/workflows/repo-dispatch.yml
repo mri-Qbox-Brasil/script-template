@@ -2,8 +2,9 @@ name: Notify Docs Update
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
     paths:
+      - README.md
       - MANUAL.md
   workflow_dispatch:
 
@@ -14,3 +15,4 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
     with:
       friendly-name: "Nome do Seu Script" # ⚠️ Altere para o nome do script
+      doc-file: "MANUAL.md"
