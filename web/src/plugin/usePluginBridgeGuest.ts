@@ -7,6 +7,7 @@ import {
 
 interface PluginContext {
     accentColor: string
+    backgroundColor: string
     locale: string
     perms: string[]
     initialized: boolean
@@ -32,6 +33,7 @@ export function usePluginBridgeGuest(opts: UsePluginBridgeGuestOptions = {}) {
 
     const [context, setContext] = useState<PluginContext>({
         accentColor: defaultAccentColor,
+        backgroundColor: '',
         locale: defaultLocale,
         perms: [],
         initialized: false,
@@ -57,13 +59,17 @@ export function usePluginBridgeGuest(opts: UsePluginBridgeGuestOptions = {}) {
                 case 'mri-plugin/init':
                     setContext({
                         accentColor: msg.accentColor,
+                        backgroundColor: msg.backgroundColor ?? '',
                         locale: msg.locale,
                         perms: msg.perms,
                         initialized: true,
                     })
                     break
                 case 'mri-plugin/theme-changed':
-                    setContext((prev) => ({ ...prev, accentColor: msg.accentColor }))
+                    setContext((prev) => ({ ...prev, accentColor: msg.accentColor, backgroundColor: msg.backgroundColor ?? prev.backgroundColor }))
+                    break
+                case 'mri-plugin/perms-changed':
+                    setContext((prev) => ({ ...prev, perms: msg.perms }))
                     break
                 case 'mri-plugin/close':
                     onCloseRef.current?.()

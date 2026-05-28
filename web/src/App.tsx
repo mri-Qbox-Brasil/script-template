@@ -3,15 +3,17 @@ import { usePluginBridgeGuest } from './plugin/usePluginBridgeGuest'
 import { useIsEmbedded } from './plugin/useIsEmbedded'
 import { useNuiEvent } from './context/NuiContext'
 import { useAccentColor } from './hooks/useAccentColor'
+import { useBackgroundColor } from './hooks/useBackgroundColor'
 import { HelloPlugin } from './components/HelloPlugin'
 import { ConfigPanel } from './components/ConfigPanel'
 import { MriSpinner } from '@mriqbox/ui-kit'
 
 type Tab = 'home' | 'config'
 
-function PluginContent({ locale, accentColor }: { locale?: string; accentColor: string }) {
+function PluginContent({ locale, accentColor, backgroundColor }: { locale?: string; accentColor: string; backgroundColor?: string }) {
     const [tab, setTab] = useState<Tab>('home')
     useAccentColor(accentColor)
+    useBackgroundColor(backgroundColor)
 
     return (
         <div className="flex flex-col h-full w-full bg-background text-foreground">
@@ -46,7 +48,7 @@ function PluginContent({ locale, accentColor }: { locale?: string; accentColor: 
 }
 
 function EmbeddedMode() {
-    const { locale, accentColor, initialized } = usePluginBridgeGuest()
+    const { locale, accentColor, backgroundColor, initialized } = usePluginBridgeGuest()
     if (!initialized) {
         return (
             <div className="flex items-center justify-center h-full">
@@ -54,7 +56,7 @@ function EmbeddedMode() {
             </div>
         )
     }
-    return <PluginContent locale={locale} accentColor={accentColor} />
+    return <PluginContent locale={locale} accentColor={accentColor} backgroundColor={backgroundColor} />
 }
 
 function StandaloneMode() {

@@ -23,17 +23,13 @@ function hexToHslVar(hex: string): string | null {
     return `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`
 }
 
-/**
- * Aplica `accentColor` (hex) nos tokens shadcn `--primary` e `--ring`.
- * `--ring` precisa atualizar junto com `--primary` — sem ele o focus state
- * dos inputs fica preso na cor default mesmo com accent mudado.
- */
-export function useAccentColor(accentColor: string): void {
-    useEffect(() => {
-        const hsl = hexToHslVar(accentColor)
-        if (!hsl) return
-        const root = document.documentElement.style
-        root.setProperty('--primary', hsl)
-        root.setProperty('--ring', hsl)
-    }, [accentColor])
+export function applyAccentColor(hex: string): void {
+    const hsl = hexToHslVar(hex)
+    if (!hsl) return
+    document.documentElement.style.setProperty('--primary', hsl)
+    document.documentElement.style.setProperty('--ring', hsl)
+}
+
+export function useAccentColor(hex: string): void {
+    useEffect(() => { applyAccentColor(hex) }, [hex])
 }

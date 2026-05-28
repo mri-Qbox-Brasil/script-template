@@ -20,6 +20,8 @@ export interface MriPluginManifest {
     htmlPath?: string
     /** ACE perms que liberam o plugin. Semântica OR. Ex: ['plugin.admin', 'command'] */
     requiredPerms?: string[]
+    /** Definições de permissões gerenciáveis pelo Qadmin (exibidas na UI de perms). */
+    permDefs?: Array<{ id: string; label?: string; desc?: string; category?: string }>
     /** Descrição curta opcional. */
     description?: string
 }
@@ -29,13 +31,16 @@ export type MriPluginHostMessage =
     | {
           type: 'mri-plugin/init'
           accentColor: string
+          backgroundColor?: string
           locale: string
           perms: string[]
       }
     | {
           type: 'mri-plugin/theme-changed'
           accentColor: string
+          backgroundColor?: string
       }
+    | { type: 'mri-plugin/perms-changed'; perms: string[] }
     | { type: 'mri-plugin/close' }
 
 /** Mensagens que o plugin guest envia pro host (Qadmin). */
