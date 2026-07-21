@@ -1,0 +1,19 @@
+# Arquivos que o template-sync NUNCA deve sobrescrever no repo de destino.
+# A action lê este arquivo no repositório de DESTINO, e ele é sincronizado
+# junto com o template — então adicionar aqui protege todos os repos.
+
+# Conteúdo próprio de cada recurso. O template carrega um MANUAL.md/README.md
+# de exemplo (placeholder) que serve de ponto de partida para repos NOVOS; sem
+# esta linha, o sync semanal sobrescreveria a documentação real por esse
+# esqueleto — e o repo-dispatch publicaria o placeholder na documentação.
+MANUAL.md
+README.md
+
+# Configuração e segredos específicos do repo
+config/*
+*.local.lua
+.env
+.env.*
+
+# O próprio agendamento do sync
+.github/workflows/template-sync.yml
