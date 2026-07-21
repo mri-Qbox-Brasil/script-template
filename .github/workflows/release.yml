@@ -6,5 +6,15 @@ on:
 
 jobs:
   release:
+    # id-token: write e obrigatorio para o OIDC do Infisical (o callable so
+    # recebe o id-token se o job chamador conceder). Os demais espelham o que o
+    # callable declara, para nao restringir o GITHUB_TOKEN abaixo do necessario.
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      packages: write
+      models: read
+      id-token: write
     uses: mri-Qbox-Brasil/workflows/.github/workflows/callable-release.yml@main
     secrets: inherit

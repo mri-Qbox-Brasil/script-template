@@ -7,6 +7,10 @@ on:
 
 jobs:
   update:
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write # OIDC do Infisical
     uses: mri-Qbox-Brasil/workflows/.github/workflows/callable-update-actions.yml@main
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}

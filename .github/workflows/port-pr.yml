@@ -20,6 +20,7 @@ on:
 permissions:
   pull-requests: write
   contents: read
+  id-token: write # OIDC do Infisical
 
 jobs:
   port:
