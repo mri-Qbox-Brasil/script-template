@@ -26,7 +26,36 @@
         --input: 217.2 32.6% 17.5%;
         --ring: 217.2 91.2% 59.8%;
         --radius: 0.5rem;
+
+        /* Alpha das superficies (bg-background/bg-card). 1 = opaco; so glass abaixa. */
+        --ui-surface-alpha: 1;
+        --ui-surface-alpha-card: 1;
+        /* Preenchido em runtime pelo applyUiConfig (modo embedded). */
+        --ui-glass-opacity: 0.65;
     }
+}
+
+/* Tema glass — porte do [data-theme="glass"] do ox_lib. Setado pelo useUiConfig
+   so no embedded. Excluido no light. */
+html:not(.light)[data-theme="glass"] {
+    --ui-surface-alpha: var(--ui-glass-opacity, 0.65);
+    --ui-surface-alpha-card: calc(var(--ui-glass-opacity, 0.65) * 0.76);
+    --ui-border-hsl: 0 0% 100%;
+    --ui-border-alpha: 0.12;
+}
+
+html:not(.light)[data-theme="glass"] .bg-background {
+    background-image: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 30%,
+        rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.04) 100%);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15),
+        inset 1px 0 1px rgba(255, 255, 255, 0.05);
+}
+
+html:not(.light)[data-theme="glass"] .bg-card {
+    background-image: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 40%);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
 }
 
 * {

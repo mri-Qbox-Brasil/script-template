@@ -18,25 +18,26 @@ AddConvarChangeListener('mri:color', function(name)
     TriggerClientEvent('plugintest:client:accentColorChanged', -1, resolveAccentColor())
 end)
 
-CreateThread(function()
-    local deadline = GetGameTimer() + 10000
-    while GetResourceState('mri_Qadmin') ~= 'started' and GetGameTimer() < deadline do
-        Wait(200)
-    end
+local function doRegister()
     if GetResourceState('mri_Qadmin') ~= 'started' then return end
+    exports['mri_Qadmin']:RegisterPlugin({
+        id = 'plugintest',
+        label = 'Plugin Test',
+        icon = 'box',
+        resource = GetCurrentResourceName(),
+        htmlPath = 'html/index.html',
+        requiredPerms = { 'plugintest.admin', 'command' },
+        description = 'Plugin de exemplo / template base',
+    })
+end
 
-    local ok, result = pcall(function()
-        return exports['mri_Qadmin']:RegisterPlugin({
-            id = 'plugintest',
-            label = 'Plugin Test',
-            icon = 'box',
-            resource = GetCurrentResourceName(),
-            htmlPath = 'html/index.html',
-            requiredPerms = { 'plugintest.admin', 'command' },
-            description = 'Plugin de exemplo / template base',
-        })
-    end)
-    if not ok or result == false then
-        print('[plugintest] ' .. locale('plugin.register_failed', tostring(result)))
-    end
+-- Qadmin inicia/reinicia → re-registra automaticamente
+AddEventHandler('onServerResourceStart', function(resourceName)
+    if resourceName == 'mri_Qadmin' then doRegister() end
+end)
+
+-- Plugin inicia com Qadmin já rodando → registra imediatamente
+CreateThread(function()
+    Wait(0)
+    doRegister()
 end)

@@ -1,6 +1,5 @@
 {
     "plugin": {
-        "register_failed": "Falha ao registrar plugin no mri_Qadmin: %s",
         "config_save_failed": "Falha ao salvar config",
         "no_permission": "Sem permissão",
         "invalid_payload": "Payload inválido",

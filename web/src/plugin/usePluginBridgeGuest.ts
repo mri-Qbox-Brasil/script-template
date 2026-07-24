@@ -8,6 +8,9 @@ import {
 interface PluginContext {
     accentColor: string
     backgroundColor: string
+    /** Config visual do /uiconfig do ox_lib repassado pelo Qadmin. `null` até
+     *  o init. Consumido pelo applyUiConfig do ui-kit (ignora chave desconhecida). */
+    uiConfig: Record<string, unknown> | null
     locale: string
     perms: string[]
     initialized: boolean
@@ -34,6 +37,7 @@ export function usePluginBridgeGuest(opts: UsePluginBridgeGuestOptions = {}) {
     const [context, setContext] = useState<PluginContext>({
         accentColor: defaultAccentColor,
         backgroundColor: '',
+        uiConfig: null,
         locale: defaultLocale,
         perms: [],
         initialized: false,
@@ -60,13 +64,16 @@ export function usePluginBridgeGuest(opts: UsePluginBridgeGuestOptions = {}) {
                     setContext({
                         accentColor: msg.accentColor,
                         backgroundColor: msg.backgroundColor ?? '',
+                        uiConfig: msg.uiConfig ?? null,
                         locale: msg.locale,
                         perms: msg.perms,
                         initialized: true,
                     })
                     break
                 case 'mri-plugin/theme-changed':
-                    setContext((prev) => ({ ...prev, accentColor: msg.accentColor, backgroundColor: msg.backgroundColor ?? prev.backgroundColor }))
+                    // uiConfig com `?? prev`: theme-changed as vezes vem so com
+                    // accent, e sobrescrever com undefined perderia o do init.
+                    setContext((prev) => ({ ...prev, accentColor: msg.accentColor, backgroundColor: msg.backgroundColor ?? prev.backgroundColor, uiConfig: msg.uiConfig ?? prev.uiConfig }))
                     break
                 case 'mri-plugin/perms-changed':
                     setContext((prev) => ({ ...prev, perms: msg.perms }))

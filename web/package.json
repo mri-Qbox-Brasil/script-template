@@ -28,12 +28,12 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
-        "@mriqbox/ui-kit": "latest",
+        "@mriqbox/ui-kit": "^4.20.1",
         "clsx": "^1.2.1",
+        "lucide-react": "^0.575.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "tailwindcss-animate": "^1.0.7",
         "tailwind-merge": "^1.14.0",
-        "lucide-react": "^0.575.0"
+        "tailwindcss-animate": "^1.0.7"
     }
 }

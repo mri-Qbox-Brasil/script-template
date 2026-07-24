@@ -32,6 +32,8 @@ export type MriPluginHostMessage =
           type: 'mri-plugin/init'
           accentColor: string
           backgroundColor?: string
+          /** Estilo visual do /uiconfig do ox_lib (radius, fonte, tema, glass, dims). */
+          uiConfig?: Record<string, unknown>
           locale: string
           perms: string[]
       }
@@ -39,6 +41,7 @@ export type MriPluginHostMessage =
           type: 'mri-plugin/theme-changed'
           accentColor: string
           backgroundColor?: string
+          uiConfig?: Record<string, unknown>
       }
     | { type: 'mri-plugin/perms-changed'; perms: string[] }
     | { type: 'mri-plugin/close' }

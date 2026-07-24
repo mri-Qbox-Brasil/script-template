@@ -4,6 +4,7 @@ import { useIsEmbedded } from './plugin/useIsEmbedded'
 import { useNuiEvent } from './context/NuiContext'
 import { useAccentColor } from './hooks/useAccentColor'
 import { useBackgroundColor } from './hooks/useBackgroundColor'
+import { useUiConfig } from './hooks/useUiConfig'
 import { HelloPlugin } from './components/HelloPlugin'
 import { ConfigPanel } from './components/ConfigPanel'
 import { MriSpinner } from '@mriqbox/ui-kit'
@@ -48,7 +49,11 @@ function PluginContent({ locale, accentColor, backgroundColor }: { locale?: stri
 }
 
 function EmbeddedMode() {
-    const { locale, accentColor, backgroundColor, initialized } = usePluginBridgeGuest()
+    const { locale, accentColor, backgroundColor, uiConfig, initialized } = usePluginBridgeGuest()
+    // Herda radius/fonte/tema/glass do /uiconfig. Só no embedded — standalone
+    // não recebe config do host. Fica aqui (não em PluginContent) porque aplica
+    // no documento, não depende dos props do conteúdo.
+    useUiConfig(uiConfig)
     if (!initialized) {
         return (
             <div className="flex items-center justify-center h-full">
