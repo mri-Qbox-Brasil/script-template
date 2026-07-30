@@ -7,6 +7,10 @@ on:
 
 jobs:
   sync:
+    # O `source-repo` do callable é este próprio repositório, então aqui o sync
+    # seria o template consigo mesmo — um no-op agendado toda segunda. O arquivo
+    # precisa existir mesmo assim: é ele que é copiado para os repos-filhos.
+    if: ${{ github.repository != 'mri-Qbox-Brasil/script-template' }}
     permissions:
       contents: write
       pull-requests: write

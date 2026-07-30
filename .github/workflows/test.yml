@@ -1,0 +1,37 @@
+name: Test (Web & Lua)
+
+# Delega para o callable da org, no mesmo modelo do lint.yml.
+#
+# Duas trilhas independentes, porque nem todo resource tem as duas:
+#   web  — Vitest sobre o pacote da NUI.
+#   Lua  — o server/*.lua REAL rodando sob wasmoon (@mriqbox/fivem-test-harness),
+#          sem servidor FiveM e sem MySQL.
+#
+# Como no lint.yml, as duas nascem DESLIGADAS: o template nao tem `tests/` nem
+# script `test` no `web/package.json`, entao ligar por default quebraria todo
+# repo novo. Ligue no repo, por variavel — NAO editando este arquivo, que o
+# template-sync sobrescreve:
+#
+#   gh variable set CI_TEST_WEB --body true
+#   gh variable set CI_TEST_LUA --body true
+
+on:
+  pull_request:
+    paths:
+      - "web/**"
+      - "server/**"
+      - "shared/**"
+      - "tests/**"
+      - ".github/workflows/test.yml"
+  workflow_dispatch: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    uses: mri-Qbox-Brasil/workflows/.github/workflows/callable-test.yml@main
+    with:
+      web-tests: false
+      lua-tests: false

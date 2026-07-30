@@ -1,12 +1,28 @@
-name: Lint
+name: Lint (Web & Lua)
+
+# As duas trilhas nascem DESLIGADAS: o luacheck exige um `.luacheckrc` e o
+# ESLint um pacote em `web/`, e o template nao traz nenhum dos dois. Ligue no
+# repo, por variavel — NAO editando este arquivo, que o template-sync sobrescreve
+# (o pull default resolve conflito a favor do template):
+#
+#   gh variable set CI_LINT_WEB --body true
+#   gh variable set CI_LINT_LUA --body true
+#
+# Os `paths` ja cobrem as duas trilhas: filtro de caminho decide se o workflow
+# dispara, e a chave decide se o job roda. Sem `web/**` aqui, ligar CI_LINT_WEB
+# nao adiantaria — um PR so da NUI nem acordaria o workflow. Job desligado sai
+# como "skipped", e sai barato.
 
 on:
   pull_request:
     paths:
+      - "web/**"
       - "client/**"
       - "server/**"
       - "shared/**"
+      - "locales/**"
       - "fxmanifest.lua"
+      - ".luacheckrc"
       - ".github/workflows/lint.yml"
   workflow_dispatch: {}
 

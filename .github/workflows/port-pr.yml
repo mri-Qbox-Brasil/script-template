@@ -31,5 +31,9 @@ jobs:
     with:
       private-repo: ${{ vars.SOURCE_REPO }}   # vazio => <repo>-source
       pr-number: ${{ inputs.pr-number }}       # vazio no gatilho automático
-      apply-exclude: 'html/*'                  # ignora build output no diff
       pr-team: ${{ vars.PR_TEAM }}             # time marcado no comentário de falha
+      # Build output não existe na fonte, então um PR que o toca nunca aplicaria
+      # lá. O default cobre os dois layouts em uso na org (web/build e html);
+      # repos fora do padrão ajustam por CI_PORT_PR_EXCLUDE, que — ao contrário
+      # deste arquivo — sobrevive ao template-sync.
+      apply-exclude: ${{ vars.CI_PORT_PR_EXCLUDE || 'web/build/* html/*' }}
