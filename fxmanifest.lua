@@ -14,6 +14,7 @@ client_scripts {
 
 -- Scripts de Servidor
 server_scripts {
+    "@oxmysql/lib/MySQL.lua",
     "server/*.lua"
 }
 
@@ -22,4 +23,8 @@ ui_page "web/build/index.html"
 
 files {
     "web/build/**",
+}
+
+dependencies {
+    "oxmysql"
 }
